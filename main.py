@@ -40,17 +40,20 @@ def reproducir_siguiente(ctx, error=None):
         
         vc = ctx.voice_client
         if vc and vc.is_connected():
+            #cambiar la variable ejecutable por el .exe del ffmpeg
             vc.play(discord.FFmpegPCMAudio(siguiente_cancion, executable=r"C:\ffmpeg\bin\ffmpeg.exe"), 
                 after=lambda e: reproducir_siguiente(ctx, e))
 
 @bot.command()
 async def play(ctx, *, argumentos: str = None):
     if not argumentos or argumentos.count("/") != 2:
+        #la nomeclatura del comando 
         await ctx.send("Por favor usa el formato: `banda / album / cancion`")
         return
 
     partes = [p.strip() for p in argumentos.split("/")]
     banda_input, album_input, cancion_input = partes
+    nombre de las carpetas donde estan las bandas de musica
     musica_path = "musica" 
     
     bandas_encontradas = difflib.get_close_matches(banda_input, os.listdir(musica_path), n=1, cutoff=0.6)
@@ -95,7 +98,7 @@ async def play(ctx, *, argumentos: str = None):
     for cancion in canciones_restantes:
         ruta_completa_cancion = os.path.join(ruta_album, cancion)
         colas_musica[guild_id].append(ruta_completa_cancion)
-    
+    #cambiar la variable executable ubicacion del .exe del ffmepg 
     audio_source = discord.FFmpegPCMAudio(ruta_archivo, executable=r"C:\ffmpeg\bin\ffmpeg.exe")
     if voice_client.is_playing():
         voice_client.stop()
@@ -139,6 +142,7 @@ async def skip(ctx):
 
 @bot.command()
 async def bandas(ctx):
+    #cambiar la variable ruta por la ubicacion de todas las bandas de musica
     ruta = r'D:\bot musics\musica' 
     carpetas = [d for d in os.listdir(ruta) if os.path.isdir(os.path.join(ruta, d))]
     if carpetas:
